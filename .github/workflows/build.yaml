@@ -1,0 +1,47 @@
+name: Build Firmware
+
+on:
+  push:
+  schedule:
+    - cron: "30 13 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/checkout@v2
+        with:
+          repository: qmk/qmk_firmware
+          path: qmk_firmware
+          submodules: true
+
+      - name: Copy Overrides
+        run: cp -r keyboards qmk_firmware
+
+      - name: Pull image
+        run: docker pull qmkfm/qmk_cli
+
+      - name: Compile splitreus50
+        working-directory: ./qmk_firmware
+        run: |
+          docker run --rm \
+            -w /qmk_firmware \
+            -v $(pwd):/qmk_firmware \
+            qmkfm/qmk_cli \
+            make "mannkind/splitreus50:default"
+
+      - name: Move firmware(s) into build/artifacts
+        run: |
+          ls -la *
+          mkdir -p build/artifacts
+          ls -la qmk_firmware
+          cp qmk_firmware/*.hex build/artifacts
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: firmware
+          path: build/artifacts

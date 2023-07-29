@@ -1,0 +1,13 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or the definition README at
+// https://github.com/microsoft/vscode-dev-containers/tree/master/containers/python-2
+{
+	"name": "Platformio",
+	"context": "..",
+	"dockerFile": "Dockerfile",
+	"mounts": [
+		"source=/dev,target=/dev,type=bind"
+	],
+	"runArgs": [
+		"--privileged"
+	]
+}

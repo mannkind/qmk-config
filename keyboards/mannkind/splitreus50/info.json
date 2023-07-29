@@ -1,0 +1,9 @@
+{
+    "keyboard_name": "Splittreus50",
+    "manufacturer": "mannkind",
+    "usb": {
+        "vid": "0xFEED",
+        "pid": "0x3060",
+        "device_version": "0.0.1"
+    }
+}
